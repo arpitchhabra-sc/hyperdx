@@ -1,7 +1,7 @@
 pipeline {
   agent {
     kubernetes {
-      label 'HyperDx'
+      label 'hyperdx'
       yaml """
 apiVersion: v1
 kind: Pod
@@ -55,8 +55,8 @@ spec:
   environment {
       sc_regions="mumbai"
       GITHUB_TOKEN = credentials('github-access')
-      app="HyperDx"
-      buildarg_DEPLOYMENT_ID="HyperDx-$GIT_COMMIT"
+      app="hyperdx"
+      buildarg_DEPLOYMENT_ID="hyperdx-$GIT_COMMIT"
       buildarg_GITHUB_TOKEN="${GITHUB_TOKEN}"
   }
 
