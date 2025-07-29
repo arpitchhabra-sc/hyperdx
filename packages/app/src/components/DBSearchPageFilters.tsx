@@ -1,9 +1,9 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+
 import { ChartConfigWithDateRange } from '@hyperdx/common-utils/dist/types';
 import {
   ActionIcon,
   Box,
-  Button,
   Checkbox,
   Flex,
   Group,
@@ -24,13 +24,10 @@ import { useAllFields, useGetKeyValues } from '@/hooks/useMetadata';
 import useResizable from '@/hooks/useResizable';
 import { getMetadata } from '@/metadata';
 import { FilterStateHook, usePinnedFilters } from '@/searchFilters';
-import { mergePath } from '@/utils';
-import { useSources } from '@/source';
 import resizeStyles from '../../styles/ResizablePanel.module.scss';
 import classes from '../../styles/SearchPage.module.scss';
-import { filter } from 'lodash';
 
-let serviceMap = {
+const serviceMap = {
   Logs: [
     'SeverityText',
     'ServiceName',
@@ -196,8 +193,6 @@ export const FilterGroup = ({
       onLoadMore(name);
     }
   }, [onLoadMore, hasLoadedMore, name]);
-
-  console.log("Deployed from US")
 
   const augmentedOptions = useMemo(() => {
     const selectedSet = new Set([
