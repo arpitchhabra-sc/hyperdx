@@ -1,6 +1,5 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 
-import { ChartConfigWithDateRange } from '@hyperdx/common-utils/dist/types';
 import {
   ActionIcon,
   Box,
@@ -18,12 +17,14 @@ import {
   UnstyledButton,
 } from '@mantine/core';
 import { IconSearch } from '@tabler/icons-react';
+import { ChartConfigWithDateRange } from '@hyperdx/common-utils/dist/types';
 
 import { useExplainQuery } from '@/hooks/useExplainQuery';
 import { useAllFields, useGetKeyValues } from '@/hooks/useMetadata';
 import useResizable from '@/hooks/useResizable';
 import { getMetadata } from '@/metadata';
 import { FilterStateHook, usePinnedFilters } from '@/searchFilters';
+
 import resizeStyles from '../../styles/ResizablePanel.module.scss';
 import classes from '../../styles/SearchPage.module.scss';
 
@@ -79,7 +80,9 @@ export const TextButton = ({
   );
 };
 
-const emptyFn = () => {};
+const emptyFn = () => {
+  // Intentionally empty - onChange is handled by parent Group's onClick
+};
 export const FilterCheckbox = ({
   value,
   label,
@@ -259,7 +262,7 @@ export const FilterGroup = ({
           selectedValues.included.size + selectedValues.excluded.size,
         ),
       );
-  }, [search, isExpanded, augmentedOptions, selectedValues]);
+  }, [search, isExpanded, augmentedOptions, selectedValues, isPinned]);
 
   const showExpandButton =
     !search &&
