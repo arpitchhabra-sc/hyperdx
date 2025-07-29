@@ -412,6 +412,7 @@ const DBSearchPageFiltersComponent = ({
   isLive: boolean;
   chartConfig: ChartConfigWithDateRange;
   sourceId?: string;
+  sourceType?: string;
   showDelta: boolean;
   denoiseResults: boolean;
   setDenoiseResults: (denoiseResults: boolean) => void;
@@ -437,41 +438,8 @@ const DBSearchPageFiltersComponent = ({
   const [showMoreFields, setShowMoreFields] = useState(false);
 
   const keysToFetch = useMemo(() => {
-
-    return serviceMap[sourceType as keyof typeof serviceMap];
-    if (!data) {
-      return [];
-    }
-
-    const strings = data
-      .sort((a, b) => {
-        // First show low cardinality fields
-        const isLowCardinality = (type: string) =>
-          type.includes('LowCardinality');
-        return isLowCardinality(a.type) && !isLowCardinality(b.type) ? -1 : 1;
-      })
-      .filter(
-        field => field.jsType && ['string'].includes(field.jsType),
-        // todo: add number type with sliders :D
-      )
-      .map(({ path, type }) => {
-        return { type, path: mergePath(path) };
-      })
-      .filter(
-        field =>
-          showMoreFields ||
-          field.type.includes('LowCardinality') || // query only low cardinality fields by default
-          Object.keys(filterState).includes(field.path) || // keep selected fields
-          isFieldPinned(field.path), // keep pinned fields
-      )
-      .map(({ path }) => path)
-      .filter(
-        path =>
-          !['body', 'timestamp', '_hdx_body'].includes(path.toLowerCase()),
-      );
-
-    return strings;
-  }, [data, filterState, showMoreFields]);
+    return serviceMap[sourceType as keyof typeof serviceMap] || [];
+  }, [sourceType]);
 
   // Special case for live tail
   const [dateRange, setDateRange] = useState<[Date, Date]>(
