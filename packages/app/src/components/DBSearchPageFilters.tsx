@@ -1,5 +1,6 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 
+import { ChartConfigWithDateRange } from '@hyperdx/common-utils/dist/types';
 import {
   ActionIcon,
   Box,
@@ -17,10 +18,8 @@ import {
   UnstyledButton,
 } from '@mantine/core';
 import { IconSearch } from '@tabler/icons-react';
-import { ChartConfigWithDateRange } from '@hyperdx/common-utils/dist/types';
 
-import { useExplainQuery } from '@/hooks/useExplainQuery';
-import { useAllFields, useGetKeyValues } from '@/hooks/useMetadata';
+import { useGetKeyValues } from '@/hooks/useMetadata';
 import useResizable from '@/hooks/useResizable';
 import { getMetadata } from '@/metadata';
 import { FilterStateHook, usePinnedFilters } from '@/searchFilters';
@@ -165,7 +164,6 @@ export type FilterGroupProps = {
   onFieldPinClick?: VoidFunction;
   isFieldPinned?: boolean;
   onLoadMore: (key: string) => void;
-  loadMoreLoading: boolean;
   hasLoadedMore: boolean;
 };
 
@@ -185,7 +183,6 @@ export const FilterGroup = ({
   onFieldPinClick,
   isFieldPinned,
   onLoadMore,
-  loadMoreLoading,
   hasLoadedMore,
 }: FilterGroupProps) => {
   const [search, setSearch] = useState('');
@@ -421,25 +418,9 @@ const DBSearchPageFiltersComponent = ({
   denoiseResults: boolean;
   setDenoiseResults: (denoiseResults: boolean) => void;
 } & FilterStateHook) => {
-  const {
-    toggleFilterPin,
-    toggleFieldPin,
-    isFilterPinned,
-    isFieldPinned,
-    getPinnedFields,
-  } = usePinnedFilters(sourceId ?? null);
+  const { toggleFilterPin, toggleFieldPin, isFilterPinned, isFieldPinned } =
+    usePinnedFilters(sourceId ?? null);
   const { width, startResize } = useResizable(16, 'left');
-
-  const { data: countData } = useExplainQuery(chartConfig);
-  const numRows: number = countData?.[0]?.rows ?? 0;
-
-  const { data, isLoading } = useAllFields({
-    databaseName: chartConfig.from.databaseName,
-    tableName: chartConfig.from.tableName,
-    connectionId: chartConfig.connection,
-  });
-
-  const [showMoreFields, setShowMoreFields] = useState(false);
 
   const keysToFetch = useMemo(() => {
     return serviceMap[sourceType as keyof typeof serviceMap] || [];
@@ -658,7 +639,7 @@ const DBSearchPageFiltersComponent = ({
             />
           )}
 
-          {isLoading || isFacetsLoading ? (
+          {isFacetsLoading ? (
             <Flex align="center" justify="center">
               <Loader size="xs" color="gray" />
             </Flex>
@@ -698,7 +679,6 @@ const DBSearchPageFiltersComponent = ({
               onFieldPinClick={() => toggleFieldPin(facet.key)}
               isFieldPinned={isFieldPinned(facet.key)}
               onLoadMore={loadMoreFilterValuesForKey}
-              loadMoreLoading={loadMoreLoadingKeys.has(facet.key)}
               hasLoadedMore={false}
             />
           ))}
