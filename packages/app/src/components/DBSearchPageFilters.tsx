@@ -31,16 +31,22 @@ import classes from '../../styles/SearchPage.module.scss';
 import { filter } from 'lodash';
 
 let serviceMap = {
-  "Logs" : [
-    "SeverityText",
-    "ServiceName",
-    "ResourceSchemaUrl",
-    "ScopeSchemaUrl",
-    "ScopeVersion"
-],
-// ServiceName, StatusCode, ResourceAttributes.k8s.cluster.name, ResourceAttributes.k8s.namespace.name, SpanKind
-  "Traces" : ["ServiceName", "StatusCode", "ResourceAttributes[k8s.node.name]", "ResourceAttributes[k8s.owner.name]", "SpanKind"]
-}
+  Logs: [
+    'SeverityText',
+    'ServiceName',
+    'ResourceSchemaUrl',
+    'ScopeSchemaUrl',
+    'ScopeVersion',
+  ],
+  // ServiceName, StatusCode, ResourceAttributes.k8s.cluster.name, ResourceAttributes.k8s.namespace.name, SpanKind
+  Traces: [
+    'ServiceName',
+    'StatusCode',
+    'ResourceAttributes[k8s.node.name]',
+    'ResourceAttributes[k8s.owner.name]',
+    'SpanKind',
+  ],
+};
 
 type FilterCheckboxProps = {
   label: string;
