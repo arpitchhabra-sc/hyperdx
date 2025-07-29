@@ -1403,6 +1403,7 @@ function DBSearchPage() {
                   setAnalysisMode={setAnalysisMode}
                   chartConfig={filtersChartConfig}
                   sourceId={inputSourceObj?.id}
+                  sourceType={inputSourceObj?.name}
                   showDelta={!!searchedSource?.durationExpression}
                   {...searchFilters}
                 />

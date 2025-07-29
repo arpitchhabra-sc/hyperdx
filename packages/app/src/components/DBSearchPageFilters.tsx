@@ -25,9 +25,22 @@ import useResizable from '@/hooks/useResizable';
 import { getMetadata } from '@/metadata';
 import { FilterStateHook, usePinnedFilters } from '@/searchFilters';
 import { mergePath } from '@/utils';
-
+import { useSources } from '@/source';
 import resizeStyles from '../../styles/ResizablePanel.module.scss';
 import classes from '../../styles/SearchPage.module.scss';
+import { filter } from 'lodash';
+
+let serviceMap = {
+  "Logs" : [
+    "SeverityText",
+    "ServiceName",
+    "ResourceSchemaUrl",
+    "ScopeSchemaUrl",
+    "ScopeVersion"
+],
+// ServiceName, StatusCode, ResourceAttributes.k8s.cluster.name, ResourceAttributes.k8s.namespace.name, SpanKind
+  "Traces" : ["ServiceName", "StatusCode", "ResourceAttributes[k8s.node.name]", "ResourceAttributes[k8s.owner.name]", "SpanKind"]
+}
 
 type FilterCheckboxProps = {
   label: string;
@@ -171,6 +184,14 @@ export const FilterGroup = ({
 }: FilterGroupProps) => {
   const [search, setSearch] = useState('');
   const [isExpanded, setExpanded] = useState(false);
+
+  useEffect(() => {
+    if (onLoadMore && !hasLoadedMore) {
+      onLoadMore(name);
+    }
+  }, [onLoadMore, hasLoadedMore, name]);
+
+  console.log("Deployed from US")
 
   const augmentedOptions = useMemo(() => {
     const selectedSet = new Set([
@@ -344,7 +365,7 @@ export const FilterGroup = ({
             />
           </div>
         )}
-        {onLoadMore && (!showExpandButton || isExpanded) && (
+        {/* {onLoadMore && (!showExpandButton || isExpanded) && (
           <div className="d-flex m-1">
             {loadMoreLoading ? (
               <Group m={6} gap="xs">
@@ -365,7 +386,7 @@ export const FilterGroup = ({
               />
             )}
           </div>
-        )}
+        )} */}
       </Stack>
     </Stack>
   );
@@ -381,6 +402,7 @@ const DBSearchPageFiltersComponent = ({
   analysisMode,
   setAnalysisMode,
   sourceId,
+  sourceType,
   showDelta,
   denoiseResults,
   setDenoiseResults,
@@ -415,6 +437,8 @@ const DBSearchPageFiltersComponent = ({
   const [showMoreFields, setShowMoreFields] = useState(false);
 
   const keysToFetch = useMemo(() => {
+
+    return serviceMap[sourceType as keyof typeof serviceMap];
     if (!data) {
       return [];
     }
@@ -471,10 +495,11 @@ const DBSearchPageFiltersComponent = ({
   } = useGetKeyValues({
     chartConfigs: { ...chartConfig, dateRange },
     limit: keyLimit,
-    keys: keysToFetch,
+    keys: serviceMap[sourceType as keyof typeof serviceMap],
   });
 
   const [extraFacets, setExtraFacets] = useState<Record<string, string[]>>({});
+
   const [loadMoreLoadingKeys, setLoadMoreLoadingKeys] = useState<Set<string>>(
     new Set(),
   );
@@ -514,6 +539,8 @@ const DBSearchPageFiltersComponent = ({
 
   const shownFacets = useMemo(() => {
     const _facets: { key: string; value: string[] }[] = [];
+
+    //for filters
     for (const facet of facets ?? []) {
       // don't include empty facets, unless they are already selected
       const filter = filterState[facet.key];
@@ -700,11 +727,11 @@ const DBSearchPageFiltersComponent = ({
               isFieldPinned={isFieldPinned(facet.key)}
               onLoadMore={loadMoreFilterValuesForKey}
               loadMoreLoading={loadMoreLoadingKeys.has(facet.key)}
-              hasLoadedMore={Boolean(extraFacets[facet.key])}
+              hasLoadedMore={false}
             />
           ))}
 
-          <Button
+          {/* <Button
             color="gray"
             variant="light"
             size="compact-xs"
@@ -715,7 +742,7 @@ const DBSearchPageFiltersComponent = ({
             onClick={() => setShowMoreFields(!showMoreFields)}
           >
             {showMoreFields ? 'Less filters' : 'More filters'}
-          </Button>
+          </Button> */}
         </Stack>
       </ScrollArea>
     </Box>
