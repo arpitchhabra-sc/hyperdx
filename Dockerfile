@@ -80,4 +80,4 @@ FROM api-prod AS final-api
 FROM app-prod AS final-app
 
 # Default to API
-FROM final-api AS final 
+FROM final-app AS final 
