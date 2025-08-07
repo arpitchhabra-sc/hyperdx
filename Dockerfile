@@ -44,9 +44,9 @@ RUN yarn workspace @hyperdx/app build
 # Production stage
 FROM node:${NODE_VERSION}-alpine AS production
 
-ARG CODE_VERSION
+ARG CODE_VERSION=2.1.1
 
-ENV CODE_VERSION=$CODE_VERSION
+ENV CODE_VERSION=2.1.1
 ENV NODE_ENV production
 
 # Install concurrently for running multiple processes
