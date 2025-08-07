@@ -33,7 +33,6 @@ COPY ./packages/app ./packages/app
 
 # Set build environment variables
 ENV NEXT_TELEMETRY_DISABLED 1
-ENV NEXT_OUTPUT_STANDALONE true
 ENV NEXT_PUBLIC_IS_LOCAL_MODE false
 ENV NX_DAEMON=false
 
@@ -65,11 +64,11 @@ WORKDIR /app
 COPY --chown=nodejs:nodejs --from=builder /app/packages/api/dist ./packages/api/dist
 COPY --chown=nodejs:nodejs --from=builder /app/packages/api/package.json ./packages/api/package.json
 
-# Copy built App (Next.js standalone)
-COPY --chown=nodejs:nodejs --from=builder /app/packages/app/.next/standalone ./packages/app/.next/standalone
-COPY --chown=nodejs:nodejs --from=builder /app/packages/app/.next/static ./packages/app/.next/static
+# Copy built App (Next.js)
+COPY --chown=nodejs:nodejs --from=builder /app/packages/app/.next ./packages/app/.next
 COPY --chown=nodejs:nodejs --from=builder /app/packages/app/public ./packages/app/public
 COPY --chown=nodejs:nodejs --from=builder /app/packages/app/package.json ./packages/app/package.json
+COPY --chown=nodejs:nodejs --from=builder /app/packages/app/next.config.js ./packages/app/next.config.js
 
 # Copy built common-utils
 COPY --chown=nodejs:nodejs --from=builder /app/packages/common-utils/dist ./packages/common-utils/dist
