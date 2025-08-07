@@ -1,8 +1,8 @@
-FROM node:${NODE_VERSION}-alpine AS prod
+FROM node:22.16.0-alpine AS prod
 
 ARG CODE_VERSION
 
-ENV CODE_VERSION=$CODE_VERSION
+ENV CODE_VERSION=2.1.1
 ENV NODE_ENV production
 
 # Install libs used for the start script
