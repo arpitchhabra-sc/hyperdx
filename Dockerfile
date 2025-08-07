@@ -37,7 +37,8 @@ ENV NEXT_OUTPUT_STANDALONE true
 ENV NEXT_PUBLIC_IS_LOCAL_MODE false
 ENV NX_DAEMON=false
 
-# Build both API and App
+# Build packages in dependency order
+RUN yarn workspace @hyperdx/common-utils build
 RUN yarn workspace @hyperdx/api build
 RUN yarn workspace @hyperdx/app build
 
@@ -70,11 +71,15 @@ COPY --chown=nodejs:nodejs --from=builder /app/packages/app/.next/static ./packa
 COPY --chown=nodejs:nodejs --from=builder /app/packages/app/public ./packages/app/public
 COPY --chown=nodejs:nodejs --from=builder /app/packages/app/package.json ./packages/app/package.json
 
+# Copy built common-utils
+COPY --chown=nodejs:nodejs --from=builder /app/packages/common-utils/dist ./packages/common-utils/dist
+COPY --chown=nodejs:nodejs --from=builder /app/packages/common-utils/package.json ./packages/common-utils/package.json
+
 # Copy node_modules for runtime dependencies
 COPY --chown=nodejs:nodejs --from=builder /app/node_modules ./node_modules
 COPY --chown=nodejs:nodejs --from=builder /app/packages/api/node_modules ./packages/api/node_modules
 COPY --chown=nodejs:nodejs --from=builder /app/packages/app/node_modules ./packages/app/node_modules
-COPY --chown=nodejs:nodejs --from=builder /app/packages/common-utils ./packages/common-utils
+COPY --chown=nodejs:nodejs --from=builder /app/packages/common-utils/node_modules ./packages/common-utils/node_modules
 
 # Copy and set up entry script
 COPY --chown=nodejs:nodejs docker/hyperdx/entry.prod.sh /etc/local/entry.sh
