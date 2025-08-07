@@ -15,6 +15,6 @@ echo ""
 npx concurrently \
   "--kill-others-on-fail" \
   "--names=API,APP,ALERT-TASK" \
-  "PORT=${HYPERDX_API_PORT:-8000} HYPERDX_APP_PORT=${HYPERDX_APP_PORT:-8080} node -r ./packages/api/tracing ./packages/api/index" \
-  "cd ./packages/app/packages/app && HOSTNAME='0.0.0.0' HYPERDX_API_PORT=${HYPERDX_API_PORT:-8000} PORT=${HYPERDX_APP_PORT:-8080} node server.js" \
-  "node -r ./packages/api/tracing ./packages/api/tasks/index check-alerts"
+  "PORT=${HYPERDX_API_PORT:-8000} HYPERDX_APP_PORT=${HYPERDX_APP_PORT:-8080} node -r ./packages/api/dist/tracing.js ./packages/api/dist/index.js" \
+  "cd ./packages/app/.next/standalone && HOSTNAME='0.0.0.0' HYPERDX_API_PORT=${HYPERDX_API_PORT:-8000} PORT=${HYPERDX_APP_PORT:-8080} node server.js" \
+  "node -r ./packages/api/dist/tracing.js ./packages/api/dist/tasks/index.js check-alerts"
