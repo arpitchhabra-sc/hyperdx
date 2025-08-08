@@ -38,8 +38,8 @@ const serviceMap = {
   Traces: [
     'ServiceName',
     'StatusCode',
-    'ResourceAttributes[k8s.node.name]',
-    'ResourceAttributes[k8s.owner.name]',
+    // 'ResourceAttributes[k8s.node.name]',
+    // 'ResourceAttributes[k8s.owner.name]',
     'SpanKind',
   ],
 };
