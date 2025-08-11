@@ -29,22 +29,22 @@ import classes from '../../styles/SearchPage.module.scss';
 // Override keys for specific source types
 const serviceMapOverride = {
   Logs: [
-    'SeverityText',
-    'ServiceName',
-    'ResourceAttributes[\'k8s.cluster.name\']',
-    'ResourceAttributes[\'k8s.namespace.name\']',
+    "SeverityText",
+    "ServiceName",
+    "ResourceAttributes['k8s.cluster.name']",
+    "ResourceAttributes['k8s.namespace.name']",
   ],
   Traces: [
-    'ServiceName',
-    'StatusCode',
-    'ResourceAttributes[\'k8s.node.name\']',
-    'ResourceAttributes[\'k8s.owner.name\']',
-    'SpanKind',
+    "ServiceName",
+    "StatusCode",
+    "ResourceAttributes['k8s.node.name']",
+    "ResourceAttributes['k8s.owner.name']",
+    "SpanKind",
   ],
   k8s_Events: [
-    'ResourceAttributes[\'k8s.cluster.name\']',
-    'LogAttributes[\'k8s.namespace.name\']',
-    'LogAttributes[\'k8s.event.reason\']',
+    "ResourceAttributes['k8s.cluster.name']",
+    "LogAttributes['k8s.namespace.name']",
+    "LogAttributes['k8s.event.reason']",
   ],
 };
 
@@ -489,8 +489,8 @@ const DBSearchPageFiltersComponent = ({
             [key]: [...(prev[key] || []), ...newValues],
           }));
         }
-      } catch (_error) {
-        console.error('failed to fetch more keys', _error);
+      } catch (error) {
+        console.error('failed to fetch more keys', error);
       } finally {
         setLoadMoreLoadingKeys(prev => {
           const newSet = new Set(prev);
