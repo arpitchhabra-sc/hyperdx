@@ -30,17 +30,21 @@ const serviceMap = {
   Logs: [
     'SeverityText',
     'ServiceName',
-    'ResourceSchemaUrl',
-    'ScopeSchemaUrl',
-    'ScopeVersion',
+    'ResourceAttributes[\'k8s.cluster.name\']',
+    'ResourceAttributes[\'k8s.namespace.name\']',
   ],
   // ServiceName, StatusCode, ResourceAttributes.k8s.cluster.name, ResourceAttributes.k8s.namespace.name, SpanKind
   Traces: [
     'ServiceName',
     'StatusCode',
-    // 'ResourceAttributes[k8s.node.name]',
-    // 'ResourceAttributes[k8s.owner.name]',
+    'ResourceAttributes[\'k8s.node.name\']',
+    'ResourceAttributes[\'k8s.owner.name\']',
     'SpanKind',
+  ],
+  k8s_Events: [
+    'ResourceAttributes[\'k8s.cluster.name\']',
+    'LogAttributes[\'k8s.namespace.name\']',
+    'LogAttributes[\'k8s.event.reason\']',
   ],
 };
 
