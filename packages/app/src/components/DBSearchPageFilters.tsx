@@ -436,12 +436,12 @@ const DBSearchPageFiltersComponent = ({
 
   const keysToFetch = useMemo(() => {
     // Override keys for specific source types
-    if (sourceType && sourceType in serviceMapOverride) {
-      return getKeysForSourceType(sourceType);
-    }
-    console.error('nishant is here === ',sourceType);
-    // For other source types, return empty array to use default behavior
-    // This allows the system to fetch all available keys from metadata
+          if (sourceType && sourceType in serviceMapOverride) {
+        return getKeysForSourceType(sourceType);
+      }
+      console.error('nishant is here === ', sourceType);
+      // For other source types, return empty array to use default behavior
+      // This allows the system to fetch all available keys from metadata
       return [];
   }, [sourceType]);
 
