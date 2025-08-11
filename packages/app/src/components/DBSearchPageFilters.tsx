@@ -489,8 +489,8 @@ const DBSearchPageFiltersComponent = ({
             [key]: [...(prev[key] || []), ...newValues],
           }));
         }
-      } catch (error) {
-        console.error('failed to fetch more keys', error);
+      } catch (_error) {
+        console.error('failed to fetch more keys', _error);
       } finally {
         setLoadMoreLoadingKeys(prev => {
           const newSet = new Set(prev);
