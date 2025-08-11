@@ -41,7 +41,7 @@ const serviceMapOverride = {
     "ResourceAttributes['k8s.owner.name']",
     'SpanKind',
   ],
-  "K8s Events": [
+  'K8s Events': [
     "ResourceAttributes['k8s.cluster.name']",
     "LogAttributes['k8s.namespace.name']",
     "LogAttributes['k8s.event.reason']",
