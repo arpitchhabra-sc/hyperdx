@@ -29,17 +29,17 @@ import classes from '../../styles/SearchPage.module.scss';
 // Override keys for specific source types
 const serviceMapOverride = {
   Logs: [
-    "SeverityText",
-    "ServiceName",
+    'SeverityText',
+    'ServiceName',
     "ResourceAttributes['k8s.cluster.name']",
     "ResourceAttributes['k8s.namespace.name']",
   ],
   Traces: [
-    "ServiceName",
-    "StatusCode",
+    'ServiceName',
+    'StatusCode',
     "ResourceAttributes['k8s.node.name']",
     "ResourceAttributes['k8s.owner.name']",
-    "SpanKind",
+    'SpanKind',
   ],
   k8s_Events: [
     "ResourceAttributes['k8s.cluster.name']",
