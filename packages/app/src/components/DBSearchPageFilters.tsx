@@ -26,14 +26,14 @@ import { FilterStateHook, usePinnedFilters } from '@/searchFilters';
 import resizeStyles from '../../styles/ResizablePanel.module.scss';
 import classes from '../../styles/SearchPage.module.scss';
 
-const serviceMap = {
+// Override keys for specific source types
+const serviceMapOverride = {
   Logs: [
     'SeverityText',
     'ServiceName',
     'ResourceAttributes[\'k8s.cluster.name\']',
     'ResourceAttributes[\'k8s.namespace.name\']',
   ],
-  // ServiceName, StatusCode, ResourceAttributes.k8s.cluster.name, ResourceAttributes.k8s.namespace.name, SpanKind
   Traces: [
     'ServiceName',
     'StatusCode',
@@ -46,6 +46,15 @@ const serviceMap = {
     'LogAttributes[\'k8s.namespace.name\']',
     'LogAttributes[\'k8s.event.reason\']',
   ],
+};
+
+// Helper function to get keys - override for specific types, use default for others
+const getKeysForSourceType = (sourceType?: string) => {
+  if (sourceType && sourceType in serviceMapOverride) {
+    return serviceMapOverride[sourceType as keyof typeof serviceMapOverride];
+  }
+  // For other source types, return empty array to use default behavior
+  return [];
 };
 
 type FilterCheckboxProps = {
@@ -426,7 +435,7 @@ const DBSearchPageFiltersComponent = ({
   const { width, startResize } = useResizable(16, 'left');
 
   const keysToFetch = useMemo(() => {
-    return serviceMap[sourceType as keyof typeof serviceMap] || [];
+    return getKeysForSourceType(sourceType);
   }, [sourceType]);
 
   // Special case for live tail
@@ -451,7 +460,7 @@ const DBSearchPageFiltersComponent = ({
   } = useGetKeyValues({
     chartConfigs: { ...chartConfig, dateRange },
     limit: keyLimit,
-    keys: serviceMap[sourceType as keyof typeof serviceMap],
+    keys: getKeysForSourceType(sourceType),
   });
 
   const [extraFacets, setExtraFacets] = useState<Record<string, string[]>>({});
